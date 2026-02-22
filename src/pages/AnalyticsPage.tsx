@@ -43,7 +43,7 @@ export function AnalyticsPage() {
   return (
     <div className="space-y-6 animate-slide-up">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard icon={<FileText className="w-5 h-5" />} color="text-primary-500" label="Transcriptions" value={data.totalTranscriptions} />
         <StatCard icon={<Clock className="w-5 h-5" />} color="text-accent-500" label="Total Duration" value={formatDuration(data.totalDuration)} />
         <StatCard icon={<Type className="w-5 h-5" />} color="text-warning-500" label="Total Words" value={data.totalWords.toLocaleString()} />
@@ -199,11 +199,11 @@ export function AnalyticsPage() {
 
 function StatCard({ icon, color, label, value }: { icon: React.ReactNode; color: string; label: string; value: string | number }) {
   return (
-    <Card className="flex items-center gap-4">
-      <div className={`p-2.5 rounded-xl bg-surface-100 dark:bg-surface-800 ${color}`}>{icon}</div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--text-muted)]">{label}</p>
+    <Card className="flex items-center gap-3 sm:gap-4">
+      <div className={`p-2 sm:p-2.5 rounded-xl bg-surface-100 dark:bg-surface-800 ${color}`}>{icon}</div>
+      <div className="min-w-0">
+        <p className="text-lg sm:text-2xl font-bold truncate">{value}</p>
+        <p className="text-xs text-[var(--text-muted)] truncate">{label}</p>
       </div>
     </Card>
   );

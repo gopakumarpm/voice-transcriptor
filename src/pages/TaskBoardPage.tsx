@@ -37,7 +37,7 @@ export function TaskBoardPage() {
 
   return (
     <div className="space-y-6 animate-slide-up">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[500px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:min-h-[500px]">
         {COLUMNS.map((col) => {
           const columnTasks = tasks.filter((t) => t.status === col.id);
           return (

@@ -35,7 +35,7 @@ export function DashboardPage() {
   return (
     <div className="space-y-6 animate-slide-up">
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
           label="Transcriptions"
           value={transcriptions?.length || 0}
@@ -74,8 +74,8 @@ export function DashboardPage() {
 
       {/* Transcription List */}
       <div className="space-y-4">
-        <div className="flex items-center gap-4 flex-wrap">
-          <h2 className="text-lg font-semibold flex-1">Recent Transcriptions</h2>
+        <div className="flex items-center gap-3 flex-wrap">
+          <h2 className="text-lg font-semibold flex-1 min-w-0">Recent Transcriptions</h2>
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
@@ -92,7 +92,7 @@ export function DashboardPage() {
               )}
             >Starred</button>
           </div>
-          <SearchInput value={search} onChange={setSearch} placeholder="Search transcriptions..." className="w-64" />
+          <SearchInput value={search} onChange={setSearch} placeholder="Search transcriptions..." className="w-full sm:w-64" />
         </div>
 
         {filtered.length === 0 ? (
@@ -116,11 +116,11 @@ export function DashboardPage() {
 
 function StatCard({ label, value, icon, color }: { label: string; value: string | number; icon: React.ReactNode; color: string }) {
   return (
-    <Card className="flex items-center gap-4">
-      <div className={cn('p-2.5 rounded-xl bg-surface-100 dark:bg-surface-800', color)}>{icon}</div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--text-muted)]">{label}</p>
+    <Card className="flex items-center gap-3 sm:gap-4">
+      <div className={cn('p-2 sm:p-2.5 rounded-xl bg-surface-100 dark:bg-surface-800', color)}>{icon}</div>
+      <div className="min-w-0">
+        <p className="text-lg sm:text-2xl font-bold truncate">{value}</p>
+        <p className="text-xs text-[var(--text-muted)] truncate">{label}</p>
       </div>
     </Card>
   );

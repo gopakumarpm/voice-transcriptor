@@ -128,13 +128,13 @@ function AppearanceSection() {
     <div className="space-y-6">
       <Card>
         <h3 className="font-semibold mb-4">Theme</h3>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
           {(['light', 'dark', 'system'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTheme(t)}
               className={cn(
-                'px-6 py-3 rounded-xl capitalize cursor-pointer transition-all',
+                'flex-1 sm:flex-none px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl capitalize cursor-pointer transition-all text-sm sm:text-base',
                 (theme || resolvedTheme) === t
                   ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 border-2 border-primary-500'
                   : 'glass glass-hover border-2 border-transparent'
@@ -148,13 +148,13 @@ function AppearanceSection() {
 
       <Card>
         <h3 className="font-semibold mb-4">Font Size</h3>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
           {(['small', 'medium', 'large'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateSettings({ fontSize: s })}
               className={cn(
-                'px-6 py-3 rounded-xl capitalize cursor-pointer transition-all',
+                'flex-1 sm:flex-none px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl capitalize cursor-pointer transition-all text-sm sm:text-base',
                 fontSize === s
                   ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 border-2 border-primary-500'
                   : 'glass glass-hover border-2 border-transparent'

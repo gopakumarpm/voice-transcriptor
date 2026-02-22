@@ -24,7 +24,7 @@ export function Header() {
   const showBack = location.pathname.startsWith('/transcription/');
 
   return (
-    <header className="sticky top-0 z-30 h-16 glass border-b border-[var(--border-glass)] flex items-center justify-between px-6">
+    <header className="sticky top-0 z-30 h-16 glass border-b border-[var(--border-glass)] flex items-center justify-between px-4 sm:px-6">
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}

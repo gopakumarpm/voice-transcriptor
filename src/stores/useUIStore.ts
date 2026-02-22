@@ -42,7 +42,7 @@ applyTheme(initialResolved);
 export const useUIStore = create<UIState>((set) => ({
   theme: savedTheme,
   resolvedTheme: initialResolved,
-  sidebarOpen: true,
+  sidebarOpen: false,
   sidebarCollapsed: false,
   activeModal: null,
   toasts: [],

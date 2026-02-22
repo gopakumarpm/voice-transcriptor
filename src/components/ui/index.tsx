@@ -157,7 +157,7 @@ export function Card({ className, children, onClick, hoverable }: CardProps) {
     <div
       onClick={onClick}
       className={cn(
-        'glass rounded-2xl p-5',
+        'glass rounded-2xl p-4 sm:p-5',
         hoverable && 'glass-hover cursor-pointer transition-all duration-200',
         onClick && 'cursor-pointer',
         className
@@ -212,13 +212,13 @@ interface TabsProps {
 
 export function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
   return (
-    <div className={cn('flex gap-1 p-1 rounded-xl bg-surface-200/50 dark:bg-surface-800/50', className)}>
+    <div className={cn('flex gap-1 p-1 rounded-xl bg-surface-200/50 dark:bg-surface-800/50 overflow-x-auto', className)}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
           className={cn(
-            'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer',
+            'flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all cursor-pointer whitespace-nowrap',
             activeTab === tab.id
               ? 'bg-white dark:bg-surface-700 shadow-sm text-primary-600 dark:text-primary-400'
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -314,7 +314,7 @@ export function ToastContainer({ toasts, onDismiss }: {
 }) {
   if (toasts.length === 0) return null;
   return (
-    <div className="fixed bottom-4 right-4 z-[60] flex flex-col gap-2 max-w-sm">
+    <div className="fixed bottom-4 left-4 right-4 sm:left-auto z-[60] flex flex-col gap-2 max-w-sm">
       {toasts.map((toast) => (
         <div key={toast.id} className="glass rounded-xl p-4 animate-slide-up flex items-start gap-3 shadow-lg">
           {toastIcons[toast.type]}

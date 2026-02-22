@@ -13,12 +13,14 @@ import { exportTranscription, type ExportFormat } from '@/services/exportService
 import { formatDuration, formatTimestamp } from '@/utils/formatters';
 import { TRANSCRIPTION_MODES } from '@/config/transcriptionModes';
 import { SPEAKER_COLORS, PLAYBACK_SPEEDS } from '@/config/constants';
+import { CommentThread } from '@/components/collaboration/CommentThread';
+import { ShareDialog } from '@/components/sharing/ShareDialog';
 import type { TranscriptionSegment } from '@/types';
 import type { TranscriptionAnalysis } from '@/types/analysis';
 import {
   Play, Pause, SkipBack, SkipForward, Volume2, VolumeX,
   Download, Star, MessageSquare, CheckSquare, FileText, BarChart3,
-  ListTodo, Send, Copy, Clock
+  ListTodo, Send, Copy, Clock, Share2, MessageCircle
 } from 'lucide-react';
 
 export function TranscriptionDetailPage() {
@@ -36,6 +38,7 @@ export function TranscriptionDetailPage() {
 
   const [activeTab, setActiveTab] = useState('transcript');
   const [exportOpen, setExportOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   if (!transcription) {
     return <div className="flex items-center justify-center h-64"><Spinner size="lg" /></div>;
@@ -56,6 +59,7 @@ export function TranscriptionDetailPage() {
     { id: 'transcript', label: 'Transcript', icon: <FileText className="w-4 h-4" /> },
     { id: 'analysis', label: 'Analysis', icon: <BarChart3 className="w-4 h-4" /> },
     { id: 'tasks', label: 'Tasks', icon: <ListTodo className="w-4 h-4" />, count: analysis?.actionItems.length },
+    { id: 'comments', label: 'Comments', icon: <MessageCircle className="w-4 h-4" /> },
   ];
 
   return (
@@ -77,8 +81,11 @@ export function TranscriptionDetailPage() {
           <Button variant="ghost" size="sm" onClick={handleStar}>
             <Star className={cn('w-4 h-4', transcription.isStarred && 'fill-yellow-400 text-yellow-400')} />
           </Button>
+          <Button variant="outline" size="sm" icon={<Share2 className="w-4 h-4" />} onClick={() => setShareOpen(true)}>
+            <span className="hidden sm:inline">Share</span>
+          </Button>
           <Button variant="outline" size="sm" icon={<Download className="w-4 h-4" />} onClick={() => setExportOpen(true)}>
-            Export
+            <span className="hidden sm:inline">Export</span>
           </Button>
         </div>
       </div>
@@ -100,7 +107,24 @@ export function TranscriptionDetailPage() {
         {activeTab === 'tasks' && (
           <TasksPanel analysis={analysis} transcriptionId={transcription.id} />
         )}
+        {activeTab === 'comments' && (
+          <CommentThread
+            transcriptionId={transcription.id}
+            onTimestampClick={(time) => {
+              const seekTo = (window as unknown as Record<string, (t: number) => void>).__vtSeekTo;
+              if (seekTo) seekTo(time);
+            }}
+          />
+        )}
       </div>
+
+      {/* Share Dialog */}
+      <ShareDialog
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        transcriptionId={transcription.id}
+        title={transcription.title}
+      />
 
       {/* Export Modal */}
       <Modal open={exportOpen} onClose={() => setExportOpen(false)} title="Export Transcription">
@@ -216,7 +240,7 @@ function AudioPlayer({ audioFile }: { audioFile: { blob: Blob; duration: number 
           </button>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {/* Speed */}
           <select
             value={speed}
@@ -228,8 +252,8 @@ function AudioPlayer({ audioFile }: { audioFile: { blob: Blob; duration: number 
             ))}
           </select>
 
-          {/* Volume */}
-          <div className="flex items-center gap-2">
+          {/* Volume - hidden on small screens */}
+          <div className="hidden sm:flex items-center gap-2">
             <button onClick={toggleMute} className="p-1 cursor-pointer">
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>

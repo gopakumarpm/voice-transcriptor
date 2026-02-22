@@ -138,8 +138,8 @@ export function NewTranscriptionPage() {
       </section>
 
       {/* Language & Options */}
-      <section className="flex flex-wrap items-end gap-6">
-        <div className="w-64">
+      <section className="flex flex-wrap items-end gap-3 sm:gap-6">
+        <div className="w-full sm:w-64">
           <Select
             label="Language"
             value={selectedLanguage}
