@@ -32,12 +32,12 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 h-full glass border-r border-[var(--border-glass)] z-50 flex flex-col transition-all duration-300',
+          'fixed left-0 top-0 h-full glass border-r border-[var(--border-glass)] z-50 flex flex-col transition-all duration-300 w-[260px]',
           // Desktop: always visible, width controlled by collapse state
           sidebarCollapsed ? 'lg:w-[68px]' : 'lg:w-[240px]',
-          // Mobile: fixed width, slide in/out off-screen
-          'w-[260px]',
-          sidebarOpen ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-full'
+          // Mobile: hidden off-screen by default, slide in when open
+          // Desktop: always visible (lg:translate-x-0 overrides)
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {/* Logo */}
