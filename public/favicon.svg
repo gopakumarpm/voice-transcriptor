@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="mic" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#c7d2fe" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#312e81" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow-filter">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+
+  <!-- Subtle inner glow -->
+  <ellipse cx="256" cy="180" rx="180" ry="140" fill="url(#glow)"/>
+
+  <!-- Audio waveform bars (left side) -->
+  <g filter="url(#glow-filter)" opacity="0.7">
+    <rect x="72" y="218" width="10" height="76" rx="5" fill="url(#wave)"/>
+    <rect x="96" y="194" width="10" height="124" rx="5" fill="url(#wave)"/>
+    <rect x="120" y="170" width="10" height="172" rx="5" fill="url(#wave)"/>
+    <rect x="144" y="198" width="10" height="116" rx="5" fill="url(#wave)"/>
+  </g>
+
+  <!-- Audio waveform bars (right side) -->
+  <g filter="url(#glow-filter)" opacity="0.7">
+    <rect x="358" y="198" width="10" height="116" rx="5" fill="url(#wave)"/>
+    <rect x="382" y="170" width="10" height="172" rx="5" fill="url(#wave)"/>
+    <rect x="406" y="194" width="10" height="124" rx="5" fill="url(#wave)"/>
+    <rect x="430" y="218" width="10" height="76" rx="5" fill="url(#wave)"/>
+  </g>
+
+  <!-- Microphone body -->
+  <g filter="url(#shadow)">
+    <!-- Mic capsule -->
+    <rect x="222" y="100" width="68" height="176" rx="34" fill="url(#mic)"/>
+
+    <!-- Mic grille lines -->
+    <line x1="236" y1="136" x2="276" y2="136" stroke="#c7d2fe" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="236" y1="152" x2="276" y2="152" stroke="#c7d2fe" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="236" y1="168" x2="276" y2="168" stroke="#c7d2fe" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="236" y1="184" x2="276" y2="184" stroke="#c7d2fe" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="236" y1="200" x2="276" y2="200" stroke="#c7d2fe" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+
+    <!-- Mic arc -->
+    <path d="M172 244 v20 c0 46 38 84 84 84 s84-38 84-84 v-20"
+          fill="none" stroke="white" stroke-width="12" stroke-linecap="round"/>
+
+    <!-- Mic stand -->
+    <line x1="256" y1="348" x2="256" y2="396" stroke="white" stroke-width="12" stroke-linecap="round"/>
+    <line x1="216" y1="396" x2="296" y2="396" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  </g>
+
+  <!-- AI sparkle (top right) -->
+  <g transform="translate(370, 95)" fill="white" opacity="0.9">
+    <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/>
+  </g>
+  <!-- Small sparkle -->
+  <g transform="translate(400, 130)" fill="white" opacity="0.6">
+    <path d="M6 0 L7.5 4.5 L12 6 L7.5 7.5 L6 12 L4.5 7.5 L0 6 L4.5 4.5 Z"/>
+  </g>
+</svg>
