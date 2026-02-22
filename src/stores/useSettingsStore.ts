@@ -15,8 +15,8 @@ function loadSettings(): AppSettings {
 
 function getDefaults(): AppSettings {
   return {
-    openaiApiKey: '',
-    anthropicApiKey: '',
+    openaiApiKey: import.meta.env.VITE_OPENAI_API_KEY || '',
+    anthropicApiKey: import.meta.env.VITE_ANTHROPIC_API_KEY || '',
     defaultLanguage: 'en',
     defaultMode: 'auto-detect' as TranscriptionMode,
     enableAutoDetect: true,
