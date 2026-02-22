@@ -243,6 +243,38 @@ async function processSyncQueue(): Promise<void> {
   saveQueue();
 }
 
+// ─── Sync API Keys ───
+export async function saveApiKeysToCloud(openaiKey: string, anthropicKey: string): Promise<void> {
+  if (!canSync()) return;
+  const userId = getUserId()!;
+
+  const { error } = await supabase.from('profiles').update({
+    openai_api_key: openaiKey,
+    anthropic_api_key: anthropicKey,
+    updated_at: new Date().toISOString(),
+  }).eq('id', userId);
+
+  if (error) console.warn('[VT Sync] API key sync failed:', error.message);
+}
+
+export async function loadApiKeysFromCloud(): Promise<{ openaiApiKey: string; anthropicApiKey: string } | null> {
+  if (!canSync()) return null;
+  const userId = getUserId()!;
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('openai_api_key, anthropic_api_key')
+    .eq('id', userId)
+    .single();
+
+  if (error || !data) return null;
+
+  return {
+    openaiApiKey: data.openai_api_key || '',
+    anthropicApiKey: data.anthropic_api_key || '',
+  };
+}
+
 // Process queue when coming online
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => {

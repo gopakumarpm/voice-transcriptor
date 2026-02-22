@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { AppSettings, Theme, WhisperModel } from '@/types';
 import type { TranscriptionMode } from '@/types/transcription';
 import type { PlaybackSpeed } from '@/types/audio';
+import { saveApiKeysToCloud, loadApiKeysFromCloud } from '@/services/syncService';
 
 const STORAGE_KEY = 'vt-settings';
 
@@ -39,23 +40,55 @@ function getDefaults(): AppSettings {
 interface SettingsState extends AppSettings {
   updateSettings: (partial: Partial<AppSettings>) => void;
   resetSettings: () => void;
+  loadCloudApiKeys: () => Promise<void>;
 }
 
-export const useSettingsStore = create<SettingsState>((set) => ({
+export const useSettingsStore = create<SettingsState>((set, get) => ({
   ...loadSettings(),
 
   updateSettings: (partial) => {
     set((state) => {
       const updated = { ...state, ...partial };
-      const { updateSettings: _u, resetSettings: _r, ...toSave } = updated;
+      const { updateSettings: _u, resetSettings: _r, loadCloudApiKeys: _l, ...toSave } = updated;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
       return partial;
     });
+
+    // Sync API keys to cloud when they change
+    if (partial.openaiApiKey !== undefined || partial.anthropicApiKey !== undefined) {
+      const state = get();
+      const openai = partial.openaiApiKey ?? state.openaiApiKey;
+      const anthropic = partial.anthropicApiKey ?? state.anthropicApiKey;
+      saveApiKeysToCloud(openai, anthropic).catch(() => {});
+    }
   },
 
   resetSettings: () => {
     const defaults = getDefaults();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));
     set(defaults);
+  },
+
+  loadCloudApiKeys: async () => {
+    const keys = await loadApiKeysFromCloud();
+    if (!keys) return;
+
+    const state = get();
+    // Only apply cloud keys if local keys are empty
+    const updates: Partial<AppSettings> = {};
+    if (!state.openaiApiKey && keys.openaiApiKey) {
+      updates.openaiApiKey = keys.openaiApiKey;
+    }
+    if (!state.anthropicApiKey && keys.anthropicApiKey) {
+      updates.anthropicApiKey = keys.anthropicApiKey;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      set(updates);
+      // Also persist to localStorage
+      const { updateSettings: _u, resetSettings: _r, loadCloudApiKeys: _l, ...toSave } = { ...state, ...updates };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+      console.log('[VT Settings] API keys loaded from cloud');
+    }
   },
 }));

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { useSettingsStore } from './useSettingsStore';
 import type { User, Session } from '@supabase/supabase-js';
 
 interface UserProfile {
@@ -43,6 +44,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       if (session?.user) {
         set({ user: session.user, session, loading: false });
         get().fetchProfile(session.user.id);
+        useSettingsStore.getState().loadCloudApiKeys();
       } else {
         set({ loading: false });
       }
@@ -52,6 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set({ user: session?.user || null, session });
         if (session?.user) {
           get().fetchProfile(session.user.id);
+          useSettingsStore.getState().loadCloudApiKeys();
         } else {
           set({ profile: null });
         }
