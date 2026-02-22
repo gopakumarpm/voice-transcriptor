@@ -74,7 +74,15 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     if (!keys) return;
 
     const state = get();
-    // Only apply cloud keys if local keys are empty
+
+    // If local has keys but cloud doesn't, push local → cloud
+    if ((state.openaiApiKey && !keys.openaiApiKey) || (state.anthropicApiKey && !keys.anthropicApiKey)) {
+      saveApiKeysToCloud(state.openaiApiKey, state.anthropicApiKey).catch(() => {});
+      console.log('[VT Settings] API keys pushed to cloud');
+      return;
+    }
+
+    // If cloud has keys but local doesn't, pull cloud → local
     const updates: Partial<AppSettings> = {};
     if (!state.openaiApiKey && keys.openaiApiKey) {
       updates.openaiApiKey = keys.openaiApiKey;
@@ -85,7 +93,6 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
 
     if (Object.keys(updates).length > 0) {
       set(updates);
-      // Also persist to localStorage
       const { updateSettings: _u, resetSettings: _r, loadCloudApiKeys: _l, ...toSave } = { ...state, ...updates };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
       console.log('[VT Settings] API keys loaded from cloud');
